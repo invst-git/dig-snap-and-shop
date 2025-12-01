@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual Environment
+venv/
+.venv/
+env/
+
+# Environment Variables (Sensitive Data)
+.env
+
+# IDE Settings
+.vscode/
+.idea/
+
+# Application Data
+uploads/
+visits.txt
+*.log
+
+# OS specific
+.DS_Store
+Thumbs.db
+/.qodo
+/dig
