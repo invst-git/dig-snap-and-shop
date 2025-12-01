@@ -75,7 +75,6 @@ graph TD
     Search -->|Product List| Backend
     Backend -->|JSON| UI
     UI -->|Render Cards| User
-
 ```
 
 1.  **You** upload a pic.
