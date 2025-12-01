@@ -2,9 +2,11 @@ from flask import Flask, render_template, request, jsonify
 import os
 import vision_handler
 import search_handler
+from flask_cors import CORS
 
 app = Flask(__name__)
-
+# Enable CORS for all routes - needed for mobile access via ngrok
+CORS(app, resources={r"/*": {"origins": "*"}})
 # Simple in-memory visitor counter
 VISIT_COUNT = 0
 
