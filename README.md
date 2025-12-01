@@ -1,5 +1,3 @@
-# dig 
-
 ![dig Logo](static/logo.svg)
 
 Hey there! Welcome to **dig**.
@@ -14,7 +12,7 @@ Honestly, I was just bored one weekend and thought, "Why can't I just snap a pic
 3.  **Search** for the best prices online (via RapidAPI).
 4.  **Buy** it.
 
-It's clean, it's fast, and it doesn't track you. I literally removed the visitor counter file because I didn't want to clutter my hard drive. 
+It's clean, it's fast, and it doesn't track you. I literally removed the persistent storage because I didn't want to clutter my hard drive. 
 
 ![Insert Screenshot of the App UI here - show the capture button and results]
 
@@ -55,21 +53,20 @@ Want to run this locally? Cool. Here's how:
 
 ## The "Smart" Stuff (Architecture) 
 
-Here's a little diagram I drew to explain how the magic happens. It's pretty straightforward.
 
 ```mermaid
 graph TD
     User[You (The User)] -->|Uploads Image| UI[Frontend (HTML/JS)]
     UI -->|POST /api/identify| Backend[Flask Backend]
     
-    subgraph "The Brains"
+    subgraph The_Brains
         Backend -->|Image| Vision[Vision Handler]
         Vision -->|API Call| Claude[Claude 3.7 API]
         Claude -->|Product Name| Vision
         Vision -->|Query String| Backend
     end
     
-    subgraph "The Search"
+    subgraph The_Search
         Backend -->|Query + Country| Search[Search Handler]
         Search -->|API Call| RapidAPI[RapidAPI]
         RapidAPI -->|JSON Results| Search
@@ -78,6 +75,7 @@ graph TD
     Search -->|Product List| Backend
     Backend -->|JSON| UI
     UI -->|Render Cards| User
+
 ```
 
 1.  **You** upload a pic.
@@ -89,7 +87,3 @@ graph TD
 ## Contributing 
 
 Found a bug? Want to add a "Dark Mode" (please don't)? Feel free to open a PR. I might look at it when I'm bored again.
-
-## License 
-
-MIT. Do whatever you want with it. Just don't blame me if you buy too much stuff.
