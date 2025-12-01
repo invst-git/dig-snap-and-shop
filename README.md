@@ -1,5 +1,6 @@
 ![dig Logo](static/logo.svg)
 
+
 Hey there! Welcome to **dig**.
 
 Honestly, I was just bored one weekend and thought, "Why can't I just snap a pic of something and find out where to buy it cheaper without scrolling through a million ads?" So... I built this. It's a super minimal, no-nonsense tool to find products using just your camera.
@@ -53,10 +54,9 @@ Want to run this locally? Cool. Here's how:
 
 ## The "Smart" Stuff (Architecture) 
 
-
 ```mermaid
 graph TD
-    User[You (The User)] -->|Uploads Image| UI[Frontend (HTML/JS)]
+    User["You (The User)"] -->|Uploads Image| UI[Frontend HTML/JS]
     UI -->|POST /api/identify| Backend[Flask Backend]
     
     subgraph The_Brains
@@ -75,12 +75,70 @@ graph TD
     Search -->|Product List| Backend
     Backend -->|JSON| UI
     UI -->|Render Cards| User
+```
+
+**How it works:**
 
 1.  **You** upload a pic.
 2.  **Flask** grabs it and sends it to **Claude**.
 3.  **Claude** tells us what it is (e.g., "Red Bull 250ml").
 4.  We send that text to **RapidAPI** to find prices in your country.
 5.  We show you the results. Done.
+
+## Tech Stack
+
+*   **Backend**: Flask (Python)
+*   **AI Vision**: Claude 3.7 Sonnet (Anthropic API)
+*   **Product Search**: RapidAPI Real-Time Product Search
+*   **Frontend**: Vanilla HTML/CSS/JS (no frameworks, we keep it real)
+*   **Styling**: Custom CSS with a brutalist black & white aesthetic
+
+## Project Structure
+
+```
+dig/
+├── app.py                 # Main Flask application
+├── main.py                # Application entry point
+├── vision_handler.py      # Claude Vision API integration
+├── search_handler.py      # RapidAPI product search logic
+├── requirements.txt       # Python dependencies
+├── .env                   # API keys (create this yourself)
+├── .gitignore            # Git ignore file
+├── README.md             # You are here
+├── visits.txt            # Visit counter (auto-generated)
+├── static/
+│   ├── logo.svg          # App logo
+│   ├── style.css         # All the pretty styles
+│   └── script.js         # Frontend JavaScript
+├── templates/
+│   └── index.html        # The single page app
+└── uploads/              # Temporary image storage (auto-cleaned)
+```
+
+## API Endpoints
+
+### `POST /api/identify`
+Upload an image to identify the product and search for prices.
+
+**Request:**
+- `Content-Type: multipart/form-data`
+- `image`: Image file
+- `country`: Country code (optional, defaults to user's location)
+
+**Response:**
+```json
+{
+  "product_name": "Red Bull Energy Drink 250ml",
+  "results": [
+    {
+      "title": "Red Bull Energy Drink",
+      "price": "$2.99",
+      "link": "https://...",
+      "source": "Amazon"
+    }
+  ]
+}
+```
 
 ## Contributing 
 
