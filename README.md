@@ -16,12 +16,12 @@ Honestly, I was just bored one weekend and thought, "Why can't I just snap a pic
 It's clean, it's fast, and it doesn't track you. I literally removed the persistent storage because I didn't want to clutter my hard drive. 
 ## How does it look?
 ### Choose
-![Image](https://github.com/user-attachments/assets/bba95ad4-4f03-46dd-ae32-d946de309fce)
+![Image](https://github.com/user-attachments/assets/a8481ea6-8ab6-4220-80e2-777cd6461e9c)
 ### Capture
 ![Image](https://github.com/user-attachments/assets/d9276071-f044-4486-a718-6c55a84d3dcf)
 ### Search
-![Image](https://github.com/user-attachments/assets/a8481ea6-8ab6-4220-80e2-777cd6461e9c)
 
+![Image](https://github.com/user-attachments/assets/bba95ad4-4f03-46dd-ae32-d946de309fce)
 ## Features 
 
 *   **Mobile First**: Designed to look good on your phone.
