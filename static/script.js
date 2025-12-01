@@ -15,6 +15,10 @@ document.addEventListener('DOMContentLoaded', () => {
     let selectedFile = null;
     let userCountry = 'us'; // Default
 
+    // Pagination state
+    let currentPage = 1;
+    const itemsPerPage = 10;
+
     // 1. Detect Location
     if ("geolocation" in navigator) {
         navigator.geolocation.getCurrentPosition(async (position) => {
@@ -120,6 +124,7 @@ document.addEventListener('DOMContentLoaded', () => {
             currentResults = searchData.results || [];
 
             // 3. Display Results
+            currentPage = 1; // Reset to first page for new search
             renderResults(currentResults);
             resultsSection.classList.remove('hidden');
 
@@ -144,9 +149,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function renderResults(results) {
         resultsGrid.innerHTML = '';
+        const paginationControls = document.getElementById('pagination-controls');
 
         if (results.length === 0) {
             resultsGrid.innerHTML = '<p style="text-align: center; color: #666;">No results found.</p>';
+            if (paginationControls) paginationControls.classList.add('hidden');
             return;
         }
 
@@ -158,10 +165,14 @@ document.addEventListener('DOMContentLoaded', () => {
             return 0;
         });
 
-        // Limit to 50
-        const displayResults = sortedResults.slice(0, 50);
+        // Calculate pagination
+        const totalPages = Math.ceil(sortedResults.length / itemsPerPage);
+        const startIndex = (currentPage - 1) * itemsPerPage;
+        const endIndex = startIndex + itemsPerPage;
+        const pageResults = sortedResults.slice(startIndex, endIndex);
 
-        displayResults.forEach(item => {
+        // Render current page items
+        pageResults.forEach(item => {
             const card = document.createElement('div');
             card.className = 'product-card';
 
@@ -183,6 +194,48 @@ document.addEventListener('DOMContentLoaded', () => {
 
             resultsGrid.appendChild(card);
         });
+
+        // Render pagination controls
+        if (totalPages > 1 && paginationControls) {
+            paginationControls.classList.remove('hidden');
+            paginationControls.innerHTML = '';
+
+            // Previous button
+            const prevBtn = document.createElement('button');
+            prevBtn.className = 'page-btn';
+            prevBtn.textContent = '← Previous';
+            prevBtn.disabled = currentPage === 1;
+            prevBtn.onclick = () => {
+                if (currentPage > 1) {
+                    currentPage--;
+                    renderResults(currentResults);
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            };
+            paginationControls.appendChild(prevBtn);
+
+            // Page numbers
+            const pageInfo = document.createElement('span');
+            pageInfo.className = 'page-info';
+            pageInfo.textContent = `Page ${currentPage} of ${totalPages}`;
+            paginationControls.appendChild(pageInfo);
+
+            // Next button
+            const nextBtn = document.createElement('button');
+            nextBtn.className = 'page-btn';
+            nextBtn.textContent = 'Next →';
+            nextBtn.disabled = currentPage === totalPages;
+            nextBtn.onclick = () => {
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    renderResults(currentResults);
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            };
+            paginationControls.appendChild(nextBtn);
+        } else if (paginationControls) {
+            paginationControls.classList.add('hidden');
+        }
     }
 
     function escapeHtml(text) {

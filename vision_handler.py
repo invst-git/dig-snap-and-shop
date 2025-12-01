@@ -50,9 +50,8 @@ def get_product_query(image_path):
             media_type = "image/webp"
 
         message = client.messages.create(
-            # UPDATED: Using the specific Claude 3.7 Sonnet ID
             model="claude-3-7-sonnet-20250219",
-            max_tokens=200, # Increased slightly for 3.7's verbose reasoning if needed
+            max_tokens=200,
             messages=[
                 {
                     "role": "user",
@@ -68,11 +67,24 @@ def get_product_query(image_path):
                         {
                             "type": "text",
                             "text": (
-                                "Identify the product in this image for a shopping search. "
-                                "Ignore generic marketing fluff (like 'New', 'Best Value'). "
-                                "Extract the Brand, precise Model Name, and Size/Volume if visible. "
-                                "Return ONLY the raw search query string. No preamble."
-                                "Example output: Red Bull Energy Drink 250ml"
+                                "You are identifying a product for online shopping search.\n\n"
+                                "CRITICAL INSTRUCTIONS:\n"
+                                "1. Focus ONLY on the PRIMARY/MAIN product in the image\n"
+                                "2. IGNORE accessories, cases, covers, boxes, packaging, or background items\n"
+                                "3. If you see a phone, return the PHONE itself, NOT phone cases or covers\n"
+                                "4. If you see a laptop, return the LAPTOP itself, NOT laptop bags or accessories\n\n"
+                                "REQUIRED FORMAT:\n"
+                                "First identify the product CATEGORY (e.g., Smartphone, Laptop, Tablet, Watch, Headphones, Camera, Drink, Shoe)\n"
+                                "Then provide: Brand, Model/Name, and Key Specifications if visible\n\n"
+                                "Return ONLY the search query in this format:\n"
+                                "[Category] Brand Model Specifications\n\n"
+                                "EXAMPLES:\n"
+                                "- Smartphone Apple iPhone 15 Pro 256GB\n"
+                                "- Laptop Dell XPS 13 Intel i7\n"
+                                "- Headphones Sony WH-1000XM5 Wireless\n"
+                                "- Smartwatch Apple Watch Series 9 45mm\n"
+                                "- Energy Drink Red Bull 250ml\n\n"
+                                "Remember: Focus on the MAIN PRODUCT ONLY, not accessories or packaging."
                             )
                         }
                     ],
